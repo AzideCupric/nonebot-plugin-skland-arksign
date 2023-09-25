@@ -32,6 +32,7 @@ async def add_processor(
     if not user_account:
         await skland.finish("未能获取到当前会话的用户信息，请检查")
     assert user_account
+    logger.debug(f"当前会话的用户信息：{user_account.dict()}")
 
     # 根据Session判断是否为私信/群聊
 
@@ -48,6 +49,7 @@ async def add_processor(
             # 然后把session注册到消息数据库里
             async with create_session() as db_session:
                 await get_or_add_session_model(session, db_session)
+                logger.debug(f"当前会话的Session信息：{session.dict()}")
             # 最后回应一下
             await skland.finish(cleantext(f"""
                 [森空岛明日方舟签到器]已在群聊{session.id2}添加新账号！
